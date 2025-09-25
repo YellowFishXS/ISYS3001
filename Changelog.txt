@@ -1,0 +1,26 @@
+# Changelog
+# All notable changes to this project will be documented here.
+# This project adheres to Semantic Versioning (https://semver.org/).
+
+## [Unreleased]
+
+## [1.1.0] - 2025-09-25
+### Added
+- Responsive UI for dormitory allocation system with gradient design
+- Feature cards: Smart Allocation, Information Management, Online Application
+- Login, Register, and Admin Portal buttons with hover effects
+- Mobile-first responsive layout using CSS Grid and Flexbox
+- Footer with copyright information
+
+### Changed
+- Improved visual design with modern gradients, shadows, and smooth transitions
+- Optimized for various screen sizes (mobile, tablet, desktop)
+
+### Fixed
+- Minor CSS box-sizing and layout overflow issues
+
+## [1.0.0] - 2025-09-20
+### Added
+- Initial project setup
+- Basic HTML structure for dormitory management system
+- Static frontend with styling
