@@ -5,6 +5,9 @@ from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
+login = LoginManager()
+login.login_view = 'auth.login'
+login.login_message = '请先登录'
 
 
 def create_app(config_class=Config):
@@ -12,17 +15,17 @@ def create_app(config_class=Config):
 
     app.config.from_object(config_class)
 
-    # 配置数据库
     app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/domitory'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-    # 初始化扩展
     db.init_app(app)
     migrate.init_app(app, db)
+    login.init_app(app)
 
-    # 注册蓝图
     from app.routes import main_bp
+    from app.auth import auth_bp
     app.register_blueprint(main_bp)
+    app.register_blueprint(auth_bp, url_prefix='/auth')
 
     return app
