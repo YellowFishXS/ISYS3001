@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}个人信息 - 宿舍管理系统{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title mb-0">个人信息</h4>
+            </div>
+            <div class="card-body">
+                <p><strong>姓名:</strong> {{ user.name }}</p>
+                <p><strong>手机号:</strong> {{ user.phone }}</p>
+                <p><strong>学号:</strong> {{ user.student_id }}</p>
+                <p><strong>性别:</strong> {{ user.gender }}</p>
+                <p><strong>学院:</strong> {{ user.college }}</p>
+                <p><strong>专业:</strong> {{ user.major }}</p>
+                <p><strong>班级:</strong> {{ user.class_name }}</p>
+                <p><strong>最后登录:</strong> 
+                    {% if user.last_login_time %}
+                        {{ user.last_login_time.strftime('%Y-%m-%d %H:%M') }}
+                    {% else %}
+                        首次登录
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

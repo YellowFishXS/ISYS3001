@@ -10,3 +10,8 @@ def index():
     available_rooms = DormRoom.query.filter_by(status='available').all()
     return render_template('index.html', rooms=available_rooms)
 
+@main_bp.route('/profile')
+@login_required
+def profile():
+    """用户个人信息页"""
+    return render_template('profile.html', user=current_user)
