@@ -37,6 +37,42 @@ def login():
         return redirect(url_for('main.index'))
     
     return render_template('login.html', form=form)
+    
+@auth_bp.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        if User.query.filter_by(phone=form.phone.data).first():
+            flash('该手机号已被注册', 'danger')
+            return redirect(url_for('auth.register'))
+        
+        if User.query.filter_by(student_id=form.student_id.data).first():
+            flash('该学号已被注册', 'danger')
+            return redirect(url_for('auth.register'))
+        
+        # 创建新用户 
+        user = User(
+            phone=form.phone.data,
+            password=form.password.data,  
+            name=form.name.data,
+            student_id=form.student_id.data,
+            gender=form.gender.data,  
+            college=form.college.data,  
+            major=form.major.data,  
+            class_name=form.class_name.data 
+        )
+        
+        db.session.add(user)
+        db.session.commit()
+        
+        flash('注册成功！请登录', 'success')
+        return redirect(url_for('auth.login'))
+    
+    return render_template('register.html', form=form)
+
 
 
 @auth_bp.route('/logout')
