@@ -15,3 +15,23 @@ def index():
 def profile():
     """用户个人信息页"""
     return render_template('profile.html', user=current_user)
+    
+# dormitory list
+@main_bp.route('/api/rooms')
+def api_rooms():
+    rooms = DormRoom.query.filter_by(status='available').all()
+    result = []
+    for room in rooms:
+        result.append({
+            'id': room.id,
+            'building_name': room.building.building_name,
+            'room_number': room.room_number,
+            'floor': room.floor,
+            'total_beds': room.total_beds,
+            'available_beds': room.available_beds,
+            'room_type': room.room_type,
+            'price': float(room.price),
+            'description': room.description
+        })
+    return jsonify(result)
+
