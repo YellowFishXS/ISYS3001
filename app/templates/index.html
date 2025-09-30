@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>可选宿舍列表</h1>
+<div class="row">
+    {% for room in rooms %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ room.building.building_name }} {{ room.room_number }}</h5>
+                <p class="card-text">
+                    <strong>类型:</strong> {{ room.room_type }}<br>
+                    <strong>楼层:</strong> {{ room.floor }}楼<br>
+                    <strong>可用床位:</strong> {{ room.available_beds }}/{{ room.total_beds }}<br>
+                    <strong>价格:</strong> ¥{{ room.price }}/年<br>
+                    <strong>描述:</strong> {{ room.description }}
+                </p>
+                <a href="{{ url_for('main.room_detail', room_id=room.id) }}" class="btn btn-primary">查看详情</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
