@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}{{ room.building.building_name }} {{ room.room_number }} - 宿舍管理系统{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">首页</a></li>
+                <li class="breadcrumb-item active">Dormitory Detail</li>
+            </ol>
+        </nav>
+
+        <h2>{{ room.building.building_name }} {{ room.room_number }}</h2>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>基本信息</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>楼栋名称:</strong></td>
+                                <td>{{ room.building.building_name }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>房间号:</strong></td>
+                                <td>{{ room.room_number }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>所在楼层:</strong></td>
+                                <td>{{ room.floor }}楼</td>
+                            </tr>
+                            <tr>
+                                <td><strong>房间类型:</strong></td>
+                                <td>{{ room.room_type }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>床位情况:</strong></td>
+                                <td>
+                                    <span class="{% if room.available_beds > 0 %}status-available{% else %}status-full{% endif %}">
+                                        {{ room.available_beds }}/{{ room.total_beds }} 可用
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>价格:</strong></td>
+                                <td class="text-success"><strong>¥{{ room.price }}/年</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>状态:</strong></td>
+                                <td>
+                                    <span class="badge
+                                        {% if room.status == 'available' %}bg-success
+                                        {% elif room.status == 'maintenance' %}bg-danger
+                                        {% else %}bg-secondary{% endif %}">
+                                        {% if room.status == 'available' %}可预订
+                                        {% elif room.status == 'maintenance' %}维修中
+                                        {% else %}已满{% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>楼栋信息</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>楼栋编号:</strong> {{ room.building.building_number }}</p>
+                        <p><strong>性别:</strong> {{ room.building.gender }}</p>
+                        <p><strong>总层数:</strong> {{ room.building.total_floors }}层</p>
+                        {% if room.building.description %}
+                        <p><strong>描述:</strong> {{ room.building.description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if room.description %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Room Description</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ room.description }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>操作</h5>
+            </div>
+            <div class="card-body">
+                {% if room.status == 'available' and room.available_beds > 0 %}
+                <div class="d-grid gap-2">
+                    <button class="btn btn-success btn-lg">选择此宿舍</button>
+                    <button class="btn btn-outline-primary">添加到收藏</button>
+                </div>
+                {% elif room.status == 'maintenance' %}
+                <div class="alert alert-warning">
+                    <strong>维修中</strong><br>
+                    此房间当前正在维修，暂不可选。
+                </div>
+                {% else %}
+                <div class="alert alert-secondary">
+                    <strong>已满员</strong><br>
+                    此房间所有床位已被选择。
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Quick Link</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">返回宿舍列表</a>
+<!--                    <a href="{{ url_for('main.api_rooms') }}" class="btn btn-outline-info">查看JSON数据</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
