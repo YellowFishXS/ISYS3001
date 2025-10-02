@@ -1,7 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>可选宿舍列表</h1>
+<div class="row mb-4">
+    <div class="col">
+        <h1>可选宿舍列表</h1>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" action="{{ url_for('main.index') }}" class="row g-3">
+            <div class="col-md-4">
+                <label for="search" class="form-label">搜索宿舍</label>
+                <input type="text" class="form-control" id="search" name="search" 
+                       placeholder="输入楼栋名称" value="{{ request.args.get('search', '') }}">
+            </div>
+            
+            <div class="col-md-3">
+                <label for="room_type" class="form-label">宿舍类型</label>
+                <select class="form-select" id="room_type" name="room_type">
+                    <option value="">全部类型</option>
+                    <option value="4人间" {% if request.args.get('room_type') == '4人间' %}selected{% endif %}>4人间</option>
+                    <option value="6人间" {% if request.args.get('room_type') == '6人间' %}selected{% endif %}>6人间</option>
+                    <option value="8人间" {% if request.args.get('room_type') == '8人间' %}selected{% endif %}>8人间</option>
+                </select>
+            </div>
+            
+            <div class="col-md-3">
+                <label for="building" class="form-label">楼栋</label>
+                <select class="form-select" id="building" name="building">
+                    <option value="">全部楼栋</option>
+                    {% for building in buildings %}
+                    <option value="{{ building.id }}" {% if request.args.get('building')|int == building.id %}selected{% endif %}>
+                        {{ building.building_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            
+           
+        </form>
+    </div>
+</div>
+
+
+
+
+{% if rooms %}
+
 <div class="row">
 
     {% for room in rooms %}
@@ -22,4 +69,20 @@
     </div>
     {% endfor %}
 </div>
+
+
+{% else %}
+
+
+<div class="text-center py-5">
+    <div class="empty-state">
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+        <h3>没有找到符合条件的宿舍</h3>
+        <p class="text-muted">请重试</p>
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary">查看所有宿舍</a>
+    </div>
+</div>
+
+
+
 {% endblock %}
