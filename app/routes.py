@@ -35,3 +35,8 @@ def api_rooms():
         })
     return jsonify(result)
 
+# room detail
+@main_bp.route('/room/<int:room_id>')
+def room_detail(room_id):
+    room = DormRoom.query.get_or_404(room_id)
+    return render_template('room_detail.html', room=room)
