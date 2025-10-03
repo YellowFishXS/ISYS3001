@@ -68,7 +68,16 @@
     </div>
 </div>
 
+			
+<div class="mb-4">
+    <div class="d-flex flex-wrap gap-2">
+        <span class="text-muted">快速筛选:</span>
+        <a href="{{ url_for('main.index', room_type='4人间') }}" class="btn btn-sm btn-outline-primary">4人间</a>
+        <a href="{{ url_for('main.index', room_type='6人间') }}" class="btn btn-sm btn-outline-primary">6人间</a>
+        <a href="{{ url_for('main.index', room_type='8人间') }}" class="btn btn-sm btn-outline-primary">8人间</a>
 
+    </div>
+</div>
 
 
 {% if rooms %}
