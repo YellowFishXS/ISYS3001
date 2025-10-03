@@ -58,7 +58,6 @@
                                         {% elif room.status == 'maintenance' %}bg-danger
                                         {% else %}bg-secondary{% endif %}">
                                         {% if room.status == 'available' %}可预订
-                                        {% elif room.status == 'maintenance' %}维修中
                                         {% else %}已满{% endif %}
                                     </span>
                                 </td>
@@ -108,11 +107,7 @@
                     <button class="btn btn-success btn-lg">选择此宿舍</button>
                     <button class="btn btn-outline-primary">添加到收藏</button>
                 </div>
-                {% elif room.status == 'maintenance' %}
-                <div class="alert alert-warning">
-                    <strong>维修中</strong><br>
-                    此房间当前正在维修，暂不可选。
-                </div>
+           
                 {% else %}
                 <div class="alert alert-secondary">
                     <strong>已满员</strong><br>
@@ -128,8 +123,7 @@
             </div>
             <div class="card-body">
                 <div class="d-grid gap-2">
-                    <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">返回宿舍列表</a>
-<!--                    <a href="{{ url_for('main.api_rooms') }}" class="btn btn-outline-info">查看JSON数据</a>-->
+                    <a href="{{ url_for('main.index') }}" class="btn btn-outline-secondary">Return Dormitory List</a>
                 </div>
             </div>
         </div>
