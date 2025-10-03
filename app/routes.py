@@ -26,7 +26,11 @@ def index():
     building_id = request.args.get('building', '')
     if building_id:
         query = query.filter(DormRoom.building_id == int(building_id))
-    
+        
+    room_type = request.args.get('room_type', '')
+    if room_type:
+        query = query.filter(DormRoom.room_type == room_type)
+        
     max_price = request.args.get('max_price', '')
     if max_price:
         query = query.filter(DormRoom.price <= float(max_price))
