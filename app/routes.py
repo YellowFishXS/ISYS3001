@@ -21,7 +21,16 @@ def index():
                 DormRoom.room_number.contains(search)
             )
         )
+
     
+    building_id = request.args.get('building', '')
+    if building_id:
+        query = query.filter(DormRoom.building_id == int(building_id))
+    
+    max_price = request.args.get('max_price', '')
+    if max_price:
+        query = query.filter(DormRoom.price <= float(max_price))
+
     available_rooms = query.all()
     return render_template('index.html', rooms=available_rooms,  buildings=buildings)
 
