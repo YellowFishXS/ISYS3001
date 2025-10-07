@@ -25,7 +25,9 @@ def create_app(config_class=Config):
 
     from app.routes import main_bp
     from app.auth import auth_bp
+    from app.admin import admin_bp
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
+       app.register_blueprint(admin_bp)
 
     return app
