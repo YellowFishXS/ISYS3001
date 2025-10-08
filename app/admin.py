@@ -19,8 +19,8 @@ def admin_required(f):
 
 @admin_bp.route('/')
 @admin_required
+#index
 def dashboard():
-    """管理后台首页"""
     user_count = User.query.count()
     building_count = DormBuilding.query.count()
     room_count = DormRoom.query.count()
@@ -34,7 +34,8 @@ def dashboard():
 
 @admin_bp.route('/users')
 @admin_required
+#list
 def user_management():
-    """用户管理"""
     users = User.query.all()
     return render_template('admin/users.html', users=users)
+    
