@@ -32,3 +32,9 @@ def dashboard():
                          room_count=room_count,
                          available_rooms=available_rooms)
 
+@admin_bp.route('/users')
+@admin_required
+def user_management():
+    """用户管理"""
+    users = User.query.all()
+    return render_template('admin/users.html', users=users)
