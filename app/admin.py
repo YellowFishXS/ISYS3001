@@ -46,4 +46,15 @@ def edit_user(user_id):
     user = User.query.get_or_404(user_id)
     form = AdminUserForm(obj=user)
     
+     if form.validate_on_submit():
+        existing_user = User.query.filter_by(phone=form.phone.data).first()
+        if existing_user and existing_user.id != user.id:
+            flash('该手机号已被其他用户使用', 'danger')
+            return redirect(url_for('admin.edit_user', user_id=user_id))
+        
+        form.populate_obj(user)
+        db.session.commit()
+        flash('用户信息更新成功', 'success')
+        return redirect(url_for('admin.user_management'))
+    
     return render_template('admin/user_form.html', form=form, title='编辑用户', user=user)
