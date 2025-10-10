@@ -58,3 +58,34 @@ def edit_user(user_id):
         return redirect(url_for('admin.user_management'))
     
     return render_template('admin/user_form.html', form=form, title='编辑用户', user=user)
+    
+    
+@admin_bp.route('/users/add', methods=['GET', 'POST'])
+@admin_required
+def add_user():
+    """添加用户"""
+    form = AdminUserForm()
+    
+    if form.validate_on_submit():
+        if User.query.filter_by(phone=form.phone.data).first():
+            flash('该手机号已被注册', 'danger')
+            return redirect(url_for('admin.add_user'))
+        
+        user = User(
+            phone=form.phone.data,
+            password=form.password.data,
+            name=form.name.data,
+            student_id=form.student_id.data,
+            gender=form.gender.data,
+            college=form.college.data,
+            major=form.major.data,
+            class_name=form.class_name.data,
+            status=form.status.data
+        )
+        
+        db.session.add(user)
+        db.session.commit()
+        flash('用户添加成功', 'success')
+        return redirect(url_for('admin.user_management'))
+    
+    return render_template('admin/user_form.html', form=form, title='添加用户')
