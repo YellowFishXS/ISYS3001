@@ -62,8 +62,8 @@ def edit_user(user_id):
     
 @admin_bp.route('/users/add', methods=['GET', 'POST'])
 @admin_required
+#add user
 def add_user():
-    """添加用户"""
     form = AdminUserForm()
     
     if form.validate_on_submit():
