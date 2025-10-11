@@ -89,3 +89,16 @@ def add_user():
         return redirect(url_for('admin.user_management'))
     
     return render_template('admin/user_form.html', form=form, title='添加用户')
+    
+    
+    
+    
+@admin_bp.route('/users/delete/<int:user_id>', methods=['POST'])
+@admin_required
+delete user
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('用户删除成功', 'success')
+    return redirect(url_for('admin.user_management'))
