@@ -102,3 +102,12 @@ def delete_user(user_id):
     db.session.commit()
     flash('用户删除成功', 'success')
     return redirect(url_for('admin.user_management'))
+    
+    
+    
+@admin_bp.route('/dorms')
+@admin_required
+def dorm_management():
+    """宿舍管理"""
+    rooms = DormRoom.query.all()
+    return render_template('admin/dorms.html', rooms=rooms)

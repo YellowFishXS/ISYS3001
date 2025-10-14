@@ -66,3 +66,36 @@ class AdminUserForm(FlaskForm):
         ('inactive', '禁用')
     ], validators=[DataRequired('请选择状态')])
     submit = SubmitField('保存')
+    
+    
+class AdminDormForm(FlaskForm):
+    building_id = SelectField('楼栋', coerce=int, validators=[
+        DataRequired('请选择楼栋')
+    ])
+    room_number = StringField('房间号', validators=[
+        DataRequired('请输入房间号')
+    ])
+    floor = IntegerField('楼层', validators=[
+        DataRequired('请输入楼层'),
+        NumberRange(1, 20, '楼层必须在1-20之间')
+    ])
+    total_beds = IntegerField('总床位数', validators=[
+        DataRequired('请输入总床位数'),
+        NumberRange(1, 8, '床位数必须在1-8之间')
+    ])
+    room_type = SelectField('房间类型', choices=[
+        ('4人间', '4人间'),
+        ('6人间', '6人间'),
+        ('8人间', '8人间')
+    ], validators=[DataRequired('请选择房间类型')])
+    price = DecimalField('价格/年', places=2, validators=[
+        DataRequired('请输入价格'),
+        NumberRange(0, 10000, '价格必须在0-10000之间')
+    ])
+    status = SelectField('状态', choices=[
+        ('available', '可预订'),
+        ('full', '已满'),
+        ('maintenance', '维修中')
+    ], validators=[DataRequired('请选择状态')])
+    description = TextAreaField('描述')
+    submit = SubmitField('保存')
