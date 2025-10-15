@@ -142,7 +142,6 @@ def delete_dorm(room_id):
     return redirect(url_for('admin.dorm_management'))
     
     
-    
 @admin_bp.route('/dorms/add', methods=['GET', 'POST'])
 @admin_required
 #add dorm
