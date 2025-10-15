@@ -116,7 +116,6 @@ def dorm_management():
 @admin_required
 #edit dorm
 def edit_dorm(room_id):
-    """编辑宿舍"""
     room = DormRoom.query.get_or_404(room_id)
     form = AdminDormForm(obj=room)
     form.building_id.choices = [(b.id, b.building_name) for b in DormBuilding.query.all()]
@@ -128,3 +127,16 @@ def edit_dorm(room_id):
         return redirect(url_for('admin.dorm_management'))
     
     return render_template('admin/dorm_form.html', form=form, title='编辑宿舍', room=room)
+
+
+@admin_bp.route('/dorms/delete/<int:room_id>', methods=['POST'])
+@admin_required
+#delete dormitory
+def delete_dorm(room_id):
+    room = DormRoom.query.get_or_404(room_id)
+    
+    Bed.query.filter_by(room_id=room_id).delete()
+    db.session.delete(room)
+    db.session.commit()
+    flash('宿舍删除成功', 'success')
+    return redirect(url_for('admin.dorm_management'))
