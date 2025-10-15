@@ -107,7 +107,24 @@ def delete_user(user_id):
     
 @admin_bp.route('/dorms')
 @admin_required
+#dorm list
 def dorm_management():
-    """宿舍管理"""
     rooms = DormRoom.query.all()
     return render_template('admin/dorms.html', rooms=rooms)
+    
+@admin_bp.route('/dorms/edit/<int:room_id>', methods=['GET', 'POST'])
+@admin_required
+#edit dorm
+def edit_dorm(room_id):
+    """编辑宿舍"""
+    room = DormRoom.query.get_or_404(room_id)
+    form = AdminDormForm(obj=room)
+    form.building_id.choices = [(b.id, b.building_name) for b in DormBuilding.query.all()]
+    
+    if form.validate_on_submit():
+        form.populate_obj(room)
+        db.session.commit()
+        flash('宿舍信息更新成功', 'success')
+        return redirect(url_for('admin.dorm_management'))
+    
+    return render_template('admin/dorm_form.html', form=form, title='编辑宿舍', room=room)
