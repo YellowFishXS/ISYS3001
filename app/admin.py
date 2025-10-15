@@ -140,3 +140,44 @@ def delete_dorm(room_id):
     db.session.commit()
     flash('宿舍删除成功', 'success')
     return redirect(url_for('admin.dorm_management'))
+    
+    
+    
+@admin_bp.route('/dorms/add', methods=['GET', 'POST'])
+@admin_required
+#add dorm
+def add_dorm():
+    form = AdminDormForm()
+    form.building_id.choices = [(b.id, b.building_name) for b in DormBuilding.query.all()]
+    
+    if form.validate_on_submit():
+        room = DormRoom(
+            building_id=form.building_id.data,
+            room_number=form.room_number.data,
+            floor=form.floor.data,
+            total_beds=form.total_beds.data,
+            available_beds=form.total_beds.data, 
+            room_type=form.room_type.data,
+            price=form.price.data,
+            status=form.status.data,
+            description=form.description.data
+        )
+        
+        db.session.add(room)
+        db.session.commit()
+        
+        # create bed
+        for i in range(room.total_beds):
+            bed = Bed(
+                room_id=room.id,
+                bed_number=chr(65 + i),  # A, B, C, D...
+                bed_position='上铺' if i % 2 == 0 else '下铺',
+                status='available'
+            )
+            db.session.add(bed)
+        
+        db.session.commit()
+        flash('宿舍添加成功', 'success')
+        return redirect(url_for('admin.dorm_management'))
+    
+    return render_template('admin/dorm_form.html', form=form, title='添加宿舍')
